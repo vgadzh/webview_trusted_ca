@@ -1,16 +1,26 @@
 # webview_trusted_ca
-
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This project demonstrates how to add a custom trusted CA certificate to a WebView in Flutter.
+## Usage
+1. Download the certificate in PEM format from the website https://www.gosuslugi.ru/crt
+2. Convert the certificate to DER format using the following command:
+```shell
+openssl x509 -outform der -in certificatename.pem -out certificatename.der
+ ```
+3. Move the DER certificate to the `assets/ca` folder
+4. Check the permissions in `ios/Runner/Info.plist` and make sure the following key-value pairs are present:
+```
+<key>NSAppTransportSecurity</key>
+<dict>
+<key>NSAllowsArbitraryLoads</key>
+<true/>
+</dict>
+```
+5. Check the `minSdkVersion` in `android/app/build.gradle` and ensure it is set to at least 17:
+```
+    defaultConfig {
+        ...
+        minSdkVersion 17
+        ...
+    }
+```
+6. Run the app and check the result
